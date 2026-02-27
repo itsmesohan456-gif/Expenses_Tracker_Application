@@ -28,10 +28,48 @@ def view_expenses():
     else:
         print("Error! No records found here.")
 
+def update_expenses():
+    if os.path.exists(FILE_NAME):
+        df = pd.read_csv(FILE_NAME)
+        print(df)
+
+    try:
+        index = int(input("Enter the index number of the expense to update:"))
+        print("Enter the new details (or click blank space to update nothing)")
+        df.at[index, 'Date'] = input(f"New Date ({df.at[index, 'Date']}):") or df.at[index, 'Date']
+        df.at[index, 'Category'] = input(f"New Category ({df.at[index, 'Category']}):") or df.at[index, 'Category']
+        df.at[index, 'Description'] = input(f"New Description ({df.at[index, 'Description']}):") or df.at[index, 'Description']
+        
+
+        new_amount = float(input(f"New Amount ({df.at[index, 'Amount']}):"))
+        df.at[index, 'Amount'] = float(new_amount) if new_amount else df.at[index, 'Amount']
+
+        df.to_csv(FILE_NAME, index=False)
+        print("Update successful!")
+    except Exception as e:
+        print(f"Error: {e}. Make sure to enter the existing index in the project.")
+    else:
+        print("No file found")
+
+def delete_expenses():
+    if os.path.exists(FILE_NAME):
+        df = pd.read_csv(FILE_NAME)
+        print(df)
+
+        try:
+            index = int(input("Enter the index number to delete:"))
+            df = df.drop(index)
+            df.to_csv(FILE_NAME, index = False)
+            print("Expense deleted sucessfully!")
+        except:
+            print("Invalid index. Nothing was deleted.")
+    else:
+        print("No records found to delete.")
+
 def main():
     init_file()
     while True:
-        print(f"1. Add Expense\n2. View Expense\n3. Exit")
+        print(f"1. Add Expense\n2. View Expense\n3. Update Expense\n 4. Delete Expense\n5.Exit")
         choice = int(input("Select an option:"))
 
         if choice == 1:
@@ -39,6 +77,10 @@ def main():
         elif choice == 2:
             view_expenses()
         elif choice == 3:
+            update_expenses()
+        elif choice == 4:
+            delete_expenses()
+        elif choice == 5:
             break
         else:
             print("Invalid choice!\nTry again.")
