@@ -10,7 +10,7 @@ def init_file():
 
 def add_expense():
     date = int(input("Enter the date:"))
-    category = input("Enter category of the expense:\n(e.g. such as Food, Rent, Education, Health etc.")
+    category = input("Enter category of the expense:\n(e.g. such as Food, Rent, Education, Health etc.)")
     description = input("Enter the description of the expense:")
     amount = float(input("Enter the expense amount:"))
 
@@ -34,8 +34,11 @@ def update_expenses():
         print(df)
 
     try:
-        index = int(input("Enter the index number of the expense to update:"))
-        print("Enter the new details (or click blank space to update nothing)")
+        user_input = input("Enter the index number to update (or press Enter/'q' to update nothing):")
+        if not user_input or user_input.lower == 'q':
+            print("Update Cancelled. No changes made.")
+            return 
+        index = int(user_input)
         df.at[index, 'Date'] = input(f"New Date ({df.at[index, 'Date']}):") or df.at[index, 'Date']
         df.at[index, 'Category'] = input(f"New Category ({df.at[index, 'Category']}):") or df.at[index, 'Category']
         df.at[index, 'Description'] = input(f"New Description ({df.at[index, 'Description']}):") or df.at[index, 'Description']
@@ -69,7 +72,7 @@ def delete_expenses():
 def main():
     init_file()
     while True:
-        print(f"1. Add Expense\n2. View Expense\n3. Update Expense\n 4. Delete Expense\n5.Exit")
+        print(f"1. Add Expense\n2. View Expense\n3. Update Expense\n4. Delete Expense\n5. Exit")
         choice = int(input("Select an option:"))
 
         if choice == 1:
